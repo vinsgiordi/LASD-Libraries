@@ -93,16 +93,16 @@ bool Vector<Data>::operator!=(const Vector& vec) const noexcept {
 // Specific member function (ClearableContainer)
 template <typename Data>
 void Vector<Data>::Clear() {
-   size = 0;
    delete[] elements;
    elements = nullptr;
+   size = 0;
 }
 
 /* ************************************************************************** */
 
 // Specific member function (ResizableContainer)
 template <typename Data>
-void Vector<Data>::Resize(const unsigned long newSize) {
+void Vector<Data>::Resize(unsigned long newSize) {
    if (newSize == 0) {
       Clear();
    } else if (size != newSize) {

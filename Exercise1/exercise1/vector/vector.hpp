@@ -69,13 +69,13 @@ public:
 
   // Specific member function (inherited from ClearableContainer)
 
-  inline void Clear() override; // Override ClearableContainer member
+  void Clear() override; // Override ClearableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from ResizableContainer)
 
-  void Resize(unsigned long) override; // Override ResizableContainer member
+  void Resize(const unsigned long) override; // Override ResizableContainer member
 
   /* ************************************************************************ */
 
