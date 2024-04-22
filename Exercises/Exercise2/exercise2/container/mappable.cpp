@@ -21,10 +21,18 @@ inline void PostOrderMappableContainer<Data>::Map(MapFun fun) {
 /* ************************************************************************** */
 
 // Specific member function (InOrderMappableContainer)
+template <typename Data>
+inline void InOrderMappableContainer<Data>::Map(MapFun fun) {
+    InOrderMap(fun);
+}
 
 /* ************************************************************************** */
 
 // Specific member function (BreadthMappableContainer)
+template <typename Data>
+inline void BreadthMappableContainer<Data>::Map(MapFun fun) {
+    BreadthMap(fun);
+}
 
 /* ************************************************************************** */
 

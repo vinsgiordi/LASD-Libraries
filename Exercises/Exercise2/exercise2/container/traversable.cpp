@@ -70,10 +70,36 @@ inline Accumulator PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Ac
 /* ************************************************************************** */
 
 // Specific member function (InOrderTraversableContainer)
+template <typename Data>
+inline void InOrderTraversableContainer<Data>::Traverse(TraverseFun fun) const {
+  InOrderTraverse(fun);
+}
+
+template <typename Data>
+template <typename Accumulator>
+inline Accumulator InOrderTraversableContainer<Data>::InOrderFold(FoldFun<Accumulator> fun, Accumulator acc) const {
+  InOrderTraverse(
+
+  );
+  return 0;
+}
 
 /* ************************************************************************** */
 
 // Specific member function (BreadthTraversableContainer)
+template <typename Data>
+inline void BreadthTraversableContainer<Data>::Traverse(TraverseFun fun) const {
+  BreadthTraverse(fun);
+}
+
+template <typename Data>
+template <typename Accumulator>
+inline Accumulator BreadthTraversableContainer::BreadthFold(FoldFun<Accumulator> fun, Accumulator acc) const {
+  BreadthTraverse(
+
+  );
+  return 0;
+}
 
 /* ************************************************************************** */
 
