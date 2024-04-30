@@ -94,7 +94,7 @@ inline void BreadthTraversableContainer<Data>::Traverse(TraverseFun fun) const {
 
 template <typename Data>
 template <typename Accumulator>
-inline Accumulator BreadthTraversableContainer::BreadthFold(FoldFun<Accumulator> fun, Accumulator acc) const {
+inline Accumulator BreadthTraversableContainer<Data>::BreadthFold(FoldFun<Accumulator> fun, Accumulator acc) const {
   BreadthTraverse(
 
   );
