@@ -57,7 +57,7 @@ exc2bs.o: $(libexc2b) zlasdtest/exercise2b/simpletest.cpp
 
 exc2bf.o: $(libexc2b) zlasdtest/exercise2b/fulltest.cpp
 	$(cc) $(cflags) -c zlasdtest/exercise2b/fulltest.cpp -o exc2bf.o
-	
+
 testVectorList.o: $(libexc1a) zmytest/testVectorList.cpp
 	$(cc) $(cflags) -c zmytest/testVectorList.cpp -o testVectorList.o
 
