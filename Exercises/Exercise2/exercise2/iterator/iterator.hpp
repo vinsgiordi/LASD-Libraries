@@ -84,7 +84,7 @@ public:
 
   // Specific member functions
 
-  virtual const Data& operator*() = 0; // (mutable version; concrete function must throw std::out_of_range when terminated)
+  virtual Data& operator*() = 0; // (mutable version; concrete function must throw std::out_of_range when terminated)
 
 };
 
@@ -118,7 +118,7 @@ public:
 
   // Comparison operators
   bool operator==(const ForwardIterator&) const noexcept = delete; // Comparison of abstract types is not possible.
-  bool operator!=(const ForwardIterator&) const noexcept = delete; ; // Comparison of abstract types is not possible.
+  bool operator!=(const ForwardIterator&) const noexcept = delete; // Comparison of abstract types is not possible.
 
   /* ************************************************************************ */
 

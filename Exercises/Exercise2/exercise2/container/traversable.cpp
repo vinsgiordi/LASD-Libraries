@@ -79,9 +79,11 @@ template <typename Data>
 template <typename Accumulator>
 inline Accumulator InOrderTraversableContainer<Data>::InOrderFold(FoldFun<Accumulator> fun, Accumulator acc) const {
   InOrderTraverse(
-
+    [fun, &acc](const Data & data) {
+      acc = fun(data, acc);
+    }
   );
-  return 0;
+  return acc;
 }
 
 /* ************************************************************************** */
@@ -96,9 +98,11 @@ template <typename Data>
 template <typename Accumulator>
 inline Accumulator BreadthTraversableContainer<Data>::BreadthFold(FoldFun<Accumulator> fun, Accumulator acc) const {
   BreadthTraverse(
-
+    [fun, &acc](const Data& data) {
+      acc = fun(data, acc);
+    }
   );
-  return 0;
+  return acc;
 }
 
 /* ************************************************************************** */

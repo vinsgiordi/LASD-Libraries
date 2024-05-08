@@ -233,7 +233,7 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class BreadthTraversableContainer: virtual public TraversableContainer<Data> {
+class BreadthTraversableContainer: public virtual TraversableContainer<Data> {
 
 private:
 
