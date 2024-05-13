@@ -9,9 +9,6 @@ using namespace std;
 
 void myTest();
 
-void TestVectorList(unsigned int & testnum, unsigned int & testerr);
-void TestStackQueue(unsigned int & testnum, unsigned int & testerr);
-
 /* ************************************************************************** */
 
 #endif

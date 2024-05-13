@@ -499,10 +499,12 @@ BTPostOrderMutableIterator<Data>& BTPostOrderMutableIterator<Data>::operator=(BT
 // Specific member functions - BTPostOrderIterator from MutableIterator
 template <typename Data>
 Data& BTPostOrderMutableIterator<Data>::operator*() {
-    if(this->curr!=nullptr)
+    if(this->curr!=nullptr) {
         return const_cast<Data&>((this->curr)->Element());
-    else
-        throw std::out_of_range("BTPostOrderMutableIterator is out of range in operator*()"); 
+    }
+    else {
+        throw std::out_of_range("BTPostOrderMutableIterator is out of range in operator*()");
+    }
 };
 
 /* ************************************************************************** */
@@ -714,10 +716,12 @@ bool BTBreadthIterator<Data>::operator==(const BTBreadthIterator &tree) const no
 // Specific member functions - BTBreadthIterator from MutableIterator
 template <typename Data>
 const Data& BTBreadthIterator<Data>::operator*() const {
-    if(Terminated())
+    if(Terminated()) {
         throw std::out_of_range("Error: out of range");
-    else
+    }
+    else {
         return curr->Element();
+    }
 }
 
 /* ************************************************************************** */
@@ -727,17 +731,22 @@ const Data& BTBreadthIterator<Data>::operator*() const {
 template <typename Data>
 BTBreadthIterator<Data>& BTBreadthIterator<Data>::operator++() {
     if (!(Terminated())) {
-        if (curr->HasLeftChild())
+        if (curr->HasLeftChild()){
             queue.Enqueue(&(curr->LeftChild())); 
-        if (curr->HasRightChild())
+        }
+        if (curr->HasRightChild()){
             queue.Enqueue(&(curr->RightChild()));
-        if (!queue.Empty())
+        }
+        if (!queue.Empty()){
             curr = queue.HeadNDequeue();
-        else
+        }
+        else{
             curr = nullptr;
+        }
     }
-    else
+    else{
         throw std::out_of_range("Error: out of range");
+    }
 
     return *this;
 }

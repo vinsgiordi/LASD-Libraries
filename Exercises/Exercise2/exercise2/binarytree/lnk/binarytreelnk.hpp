@@ -13,7 +13,7 @@ namespace lasd {
 /* ************************************************************************** */
 
 template <typename Data>
-class BinaryTreeLnk : virtual public MutableBinaryTree<Data> {    // Must extend MutableBinaryTree<Data>
+class BinaryTreeLnk : virtual public MutableBinaryTree<Data> {  
 
 private:
 
@@ -23,7 +23,7 @@ protected:
 
   using typename BinaryTree<Data>::Node;
 
-  struct NodeLnk : virtual public MutableBinaryTree<Data>::MutableNode { // Must extend MutableNode
+  struct NodeLnk : virtual public MutableBinaryTree<Data>::MutableNode { 
 
     friend class BinaryTreeLnk<Data>;
 
@@ -87,58 +87,58 @@ protected:
 public:
 
   // Default constructor
-  BinaryTreeLnk() = default;  // BinaryTreeLnk() specifiers;
+  BinaryTreeLnk() = default;
 
   /* ************************************************************************ */
 
   // Specific constructors
-  BinaryTreeLnk(const TraversableContainer<Data>&);  // BinaryTreeLnk(argument) specifiers; // A binary tree obtained from a TraversableContainer
-  BinaryTreeLnk(MappableContainer<Data>&&) noexcept; // BinaryTreeLnk(argument) specifiers; // A binary tree obtained from a MappableContainer
+  BinaryTreeLnk(const TraversableContainer<Data>&);  // A binary tree obtained from a TraversableContainer
+  BinaryTreeLnk(MappableContainer<Data>&&) noexcept; // A binary tree obtained from a MappableContainer
 
   /* ************************************************************************ */
 
   // Copy constructor
-  BinaryTreeLnk(const BinaryTreeLnk<Data>&);  // BinaryTreeLnk(argument) specifiers;
+  BinaryTreeLnk(const BinaryTreeLnk<Data>&);
 
   // Move constructor
-  BinaryTreeLnk(BinaryTreeLnk<Data>&&) noexcept;  // BinaryTreeLnk(argument) specifiers;
+  BinaryTreeLnk(BinaryTreeLnk<Data>&&) noexcept; 
 
   /* ************************************************************************ */
 
   // Destructor
-  virtual ~BinaryTreeLnk() { delete root; };  // ~BinaryTreeLnk() specifiers;
+  virtual ~BinaryTreeLnk() { delete root; }; 
 
   /* ************************************************************************ */
 
   // Copy assignment
-  BinaryTreeLnk& operator=(const BinaryTreeLnk&); // type operator=(argument) specifiers;
+  BinaryTreeLnk& operator=(const BinaryTreeLnk&); 
 
   // Move assignment
-  BinaryTreeLnk& operator=(BinaryTreeLnk&&) noexcept; // type operator=(argument) specifiers;
+  BinaryTreeLnk& operator=(BinaryTreeLnk&&) noexcept; 
 
   /* ************************************************************************ */
 
   // Comparison operators
-  inline bool operator==(const BinaryTreeLnk& btl) const noexcept { return BinaryTree<Data>::operator==(btl); };  // type operator==(argument) specifiers;
-  inline bool operator!=(const BinaryTreeLnk& btl) const noexcept { return !(operator==(btl)); }; // type operator!=(argument) specifiers;
+  inline bool operator==(const BinaryTreeLnk& btl) const noexcept { return BinaryTree<Data>::operator==(btl); };
+  inline bool operator!=(const BinaryTreeLnk& btl) const noexcept { return !(operator==(btl)); };
 
   /* ************************************************************************ */
 
   // Specific member functions (inherited from BinaryTree)
 
-  inline virtual const NodeLnk& Root() const override;  // type Root() specifiers; // Override BinaryTree member (throw std::length_error when empty)
+  inline virtual const NodeLnk& Root() const override; // Override BinaryTree member (throw std::length_error when empty)
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from MutableBinaryTree)
 
-  inline virtual NodeLnk& Root() override;  // type Root() specifiers; // Override MutableBinaryTree member (throw std::length_error when empty)
+  inline virtual NodeLnk& Root() override; // Override MutableBinaryTree member (throw std::length_error when empty)
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from ClearableContainer)
 
-  virtual void Clear() noexcept override; // type Clear() specifiers; // Override ClearableContainer member
+  virtual void Clear() noexcept override; // Override ClearableContainer member
 
 };
 

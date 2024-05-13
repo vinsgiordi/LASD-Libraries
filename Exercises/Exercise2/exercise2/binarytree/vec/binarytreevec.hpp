@@ -117,8 +117,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  inline bool operator==(const BinaryTreeVec& btv) const noexcept { return Vector<Data>::operator==(btv); };  // type operator==(argument) specifiers;
-  inline bool operator!=(const BinaryTreeVec& btv) const noexcept { return !(operator==(btv)); };   // type operator!=(argument) specifiers;
+  inline bool operator==(const BinaryTreeVec& btv) const noexcept { return Vector<Data>::operator==(btv); };
+  inline bool operator!=(const BinaryTreeVec& btv) const noexcept { return !(operator==(btv)); }
 
   /* ************************************************************************ */
 
