@@ -89,7 +89,7 @@ const typename BinaryTreeLnk<Data>::NodeLnk& BinaryTreeLnk<Data>::NodeLnk::LeftC
         return *left;
     }
     else {
-        throw std::out_of_range("NoLeft child not found");
+        throw std::out_of_range("Left child not found");
     }
 }
 
