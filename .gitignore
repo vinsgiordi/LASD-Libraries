@@ -2,6 +2,9 @@
 *.o
 *.obj
 
+# Other extension of main
+main
+
 # Exe
 *.exe
 *.dll
