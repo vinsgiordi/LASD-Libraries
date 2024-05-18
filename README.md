@@ -20,7 +20,7 @@ The libraries in this repository provide comprehensive implementations of variou
 To use these libraries, simply clone the repository to your local machine and include the desired header files in your C++ projects.
 
 ```bash
-git clone https://github.com/your-username/cpp-data-structures.git
+git clone https://github.com/vinsgiordi/LASD-Libraries.git
 ```
 
 ## Contributing
