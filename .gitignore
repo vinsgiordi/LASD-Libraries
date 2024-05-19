@@ -9,6 +9,9 @@ main
 *.exe
 *.dll
 
-# IDE Folders
+# IDE folders
 .vscode/
 .idea/
+
+# Other folders
+Slides
