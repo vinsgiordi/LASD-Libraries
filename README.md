@@ -22,7 +22,7 @@ To use these libraries, simply clone the repository to your local machine and in
 ```bash
 git clone https://github.com/vinsgiordi/LASD-Libraries.git
 ```
-Go to the root of the exercise you want to run and run the following command
+Go to the root of the exercise you want to try and run the following command
 
 ```bash
 make clean && make && ./main
