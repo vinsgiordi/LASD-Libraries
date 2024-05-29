@@ -4,11 +4,6 @@
 
 /* ************************************************************************** */
 
-#define MIN_SIZE 128
-#define MAX_SIZE 2000000
-
-/* ************************************************************************** */
-
 #include "../hashtable.hpp"
 #include "../../vector/vector.hpp"
 
@@ -23,7 +18,8 @@ class HashTableOpnAdr: virtual public HashTable<Data> {
 
 private:
 
-  // ...
+  static constexpr unsigned long  MIN_SIZE = 128;
+  static constexpr unsigned long  MAX_SIZE = 2000000;
 
 protected:
 

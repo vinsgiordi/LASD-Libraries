@@ -316,22 +316,21 @@ unsigned long HashTableOpnAdr<Data>::FindNext2Pow(unsigned long siz) const noexc
     return newSize;
 }
 
-
 template <typename Data>
-bool HashTableOpnAdr<Data>::IsResizable(unsigned long siz) const noexcept {
-    if(size > tableSize) {
-        return true;
-    } else {
-        if(siz == tableSize) {
-            return false;
-        }
-        ulong cap = (static_cast<double>(size)/static_cast<double>(size)) * 100;
-        if(cap < 75) {
-            return true;
-        }
+bool HashTableOpnAdr<Data>::IsResizable(unsigned long newSize) const noexcept {
+    if (newSize == tableSize) {
         return false;
     }
+    double loadFactor = static_cast<double>(size) / static_cast<double>(tableSize);
+    if (loadFactor < 0.75) {
+        return true;
+    }
+    if (newSize > tableSize) {
+        return true;
+    }
+    return false;
 }
+
 
 /* ************************************************************************** */
 

@@ -23,7 +23,8 @@ class HashTableClsAdr: virtual public HashTable<Data> {
 
 private:
 
-  // ...
+  // Auxiliary private member functions
+  void InitTable(unsigned long);
 
 protected:
 
@@ -109,6 +110,7 @@ protected:
 
   // Auxiliary member functions
   unsigned long FindNextPrime(unsigned long) const noexcept;
+  void TransferData(HashTableClsAdr<Data>*);
 
 };
 
