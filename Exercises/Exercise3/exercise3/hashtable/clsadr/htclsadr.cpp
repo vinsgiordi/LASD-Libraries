@@ -3,10 +3,22 @@ namespace lasd {
 
 /* ************************************************************************** */
 
+// Auxiliary private member functions
+template <typename Data>
+void HashTableClsAdr<Data>::InitTable(unsigned long size)  {
+    tableSize = size;
+    if (tableSize == 0) {
+        tableSize = MIN_TABLESIZE;
+    }
+    table = new BST<Data>[tableSize] {};
+}
+
+/* ************************************************************************** */
+
 // Default constructor
 template <typename Data>
 HashTableClsAdr<Data>::HashTableClsAdr() {
-    table = new BST<Data>[tableSize] {};
+    InitTable(MIN_TABLESIZE);
 }
 
 /* ************************************************************************** */
@@ -14,20 +26,14 @@ HashTableClsAdr<Data>::HashTableClsAdr() {
 // Specific constructor
 template <typename Data>
 HashTableClsAdr<Data>::HashTableClsAdr(unsigned long siz) {
-    if(siz < 127) {
-        siz = MIN_TABLESIZE;
-    }
-
-    if(siz >= 10000) {
-        siz = MAX_TABLESIZE;
-    }
-
-    if(siz != MIN_TABLESIZE && siz != MAX_TABLESIZE) {
-        siz = FindNextPrime(siz);
-    }
-
-    tableSize = siz;
-    table = new BST<Data>[tableSize] {};
+   if (siz < MIN_TABLESIZE) {
+    siz = MIN_TABLESIZE;
+   } else if (siz > MAX_TABLESIZE) {
+    siz = MAX_TABLESIZE;
+   } else {
+    siz = FindNextPrime(siz);
+   }
+   InitTable(siz);
 }
 
 /* ************************************************************************** */
@@ -61,8 +67,8 @@ HashTableClsAdr<Data>::HashTableClsAdr(unsigned long siz, MappableContainer<Data
 // Copy constructor
 template <typename Data>
 HashTableClsAdr<Data>::HashTableClsAdr(const HashTableClsAdr<Data>& ht) : HashTable<Data>(ht) {
-    table = new BST<Data>[tableSize] {};
-    std::copy(ht.table, ht.table + tableSize, table); // copy all elements (start, end, destination)
+    InitTable(ht.tableSize);
+    std::copy(ht.table, ht.table + tableSize, table);
 }
 
 // Move constructor
@@ -84,10 +90,12 @@ HashTableClsAdr<Data>::~HashTableClsAdr() {
 // Copy assignment
 template <typename Data>
 HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(const HashTableClsAdr<Data>& ht) {
-    HashTableClsAdr<Data>* tmp = new HashTableClsAdr<Data>(ht);
+   if (this != &ht) {
+    HashTableClsAdr<Data>* tmp  = new HashTableClsAdr<Data>(ht);
     std::swap(*this, *tmp);
     delete tmp;
-    return *this;
+   }
+   return *this;
 }
 
 // Move assignment
@@ -172,20 +180,10 @@ bool HashTableClsAdr<Data>::Exists(const Data& data) const noexcept {
 // Specific member functions from ResizableContainer
 template <typename Data>
 void HashTableClsAdr<Data>::Resize(unsigned long newSize) {
-    HashTableClsAdr<Data>* tmp = new HashTableClsAdr<Data>(newSize);
-    for(unsigned long i = 0; i < tableSize; ++i) {
-        if(table[i].Size() != 0) {
-            BTInOrderIterator<Data> it(table[i]);
-
-            while(!(it.Terminated())) {
-                Data data = it.operator*();
-                tmp->Insert(data);
-                it.operator++();
-            }
-        }
-    }
-    std::swap(*this, *tmp);
-    delete tmp;
+   HashTableClsAdr<Data>* tmp = new HashTableClsAdr<Data>(newSize);
+   TransferData(tmp);
+   std::swap(*this, *tmp);
+   delete tmp;
 }
 
 /* ************************************************************************** */
@@ -193,9 +191,9 @@ void HashTableClsAdr<Data>::Resize(unsigned long newSize) {
 // Specific member functions form ClearableContainer
 template <typename Data>
 void HashTableClsAdr<Data>::Clear() {
-    delete[] table;
-    table = new BST<Data>[tableSize] {};
-    size = 0;
+   delete[] table;
+   InitTable(tableSize);
+   size = 0;
 }
 
 /* ************************************************************************** */
@@ -203,13 +201,28 @@ void HashTableClsAdr<Data>::Clear() {
 // Auxiliary member functions
 template <typename Data>
 unsigned long HashTableClsAdr<Data>::FindNextPrime(unsigned long value) const noexcept {
-    for(ulong i = 2; i <= value / 2; ++i) {
-        if(value % i == 0) {
-            value += 1;
-            i = 2;
+   while(true) {
+    bool isPrime = true;
+    for (unsigned long i = 2; i * i <= value; ++i) {
+        if(value % 1 == 0) {
+            isPrime = false;
+            break;
         }
     }
-    return value;
+    if (isPrime) return value;
+    ++value;
+   }
+}
+
+template <typename Data>
+void HashTableClsAdr<Data>::TransferData(HashTableClsAdr<Data>* newTable) {
+    for (unsigned long i = 0; i < tableSize; ++i) {
+        BTInOrderIterator<Data> it(table[i]);
+        while (!it.Terminated()) {
+            newTable->Insert(it.operator*());
+            it.operator++();
+        }
+    }
 }
 
 /* ************************************************************************** */
