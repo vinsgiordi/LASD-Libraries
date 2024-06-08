@@ -10,221 +10,227 @@
 
 /* ************************************************************************** */
 
-namespace lasd {
+namespace lasd
+{
 
-/* ************************************************************************** */
+  /* ************************************************************************** */
 
-template <typename Data>
-class List : virtual public ClearableContainer,
-             virtual public LinearContainer<Data>,
-             virtual public DictionaryContainer<Data> {
+  template <typename Data>
+  class List : virtual public ClearableContainer,
+               virtual public LinearContainer<Data>,
+               virtual public DictionaryContainer<Data>
+  {
 
-private:
-  // ...
+  private:
+    // ...
 
-protected:
-  using Container::size;
+  protected:
+    using Container::size;
 
-  struct Node {
+    struct Node
+    {
 
-    Data val{Data()};
+      Data val{Data()};
 
-    Node *next{nullptr};
+      Node *next{nullptr};
 
-    Node() = default;
+      Node() = default;
 
-    /* ********************************************************************** */
+      /* ********************************************************************** */
 
-    // Specific constructors
+      // Specific constructors
 
-    Node(const Data &v) : val(v) {}
+      Node(const Data &v) : val(v) {}
 
-    Node(Data &&v) noexcept { std::swap(v, val); }
+      Node(Data &&v) noexcept { std::swap(v, val); }
 
-    /* ********************************************************************** */
+      /* ********************************************************************** */
+
+      // Copy constructor
+      Node(const Node &other) : val(other.val) {}
+
+      // Move constructor
+      Node(Node &&other) noexcept
+      {
+        std::swap(other.val, val);
+        std::swap(other.next, next);
+      }
+
+      /* ********************************************************************** */
+
+      // Destructor
+      virtual ~Node() { delete next; }
+
+      /* ********************************************************************** */
+
+      // Comparison operators
+
+      inline bool operator==(const Node &other) const noexcept
+      {
+        return val == other.val;
+      }
+      inline bool operator!=(const Node &other) const noexcept
+      {
+        return !((*this) == other);
+      }
+    };
+
+    Node *head{nullptr};
+    Node *tail{nullptr};
+
+  public:
+    // Default constructor
+    List() = default;
+
+    /* ************************************************************************ */
+
+    // Specific constructor
+    List(const TraversableContainer<Data> &);
+    List(MappableContainer<Data> &&);
+
+    /* ************************************************************************ */
 
     // Copy constructor
-    Node(const Node &other) : val(other.val) {}
+    List(const List &);
 
     // Move constructor
-    Node(Node &&other) noexcept {
-      std::swap(other.val, val);
-      std::swap(other.next, next);
-    }
+    List(List &&);
 
-    /* ********************************************************************** */
+    /* ************************************************************************ */
 
     // Destructor
-    // Destructor
-    virtual ~Node() { delete next; }
+    virtual ~List() { delete head; };
 
-    /* ********************************************************************** */
+    /* ************************************************************************ */
+
+    // Copy assignment
+    inline List &operator=(const List &);
+
+    // Move assignment
+    inline List &operator=(List &&) noexcept;
+
+    /* ************************************************************************ */
 
     // Comparison operators
+    inline bool operator==(const List &) const noexcept;
+    inline bool operator!=(const List &other) const noexcept
+    {
+      return !(*this == other);
+    };
 
-    inline bool operator==(const Node &other) const noexcept {
-      return val == other.val;
-    }
-    inline bool operator!=(const Node &other) const noexcept {
-      return !((*this) == other);
-    }
-
-    /* ********************************************************************** */
+    /* ************************************************************************ */
 
     // Specific member functions
 
-    // ...
+    void InsertAtFront(const Data &); // Copy of the value
+
+    void InsertAtFront(Data &&); // Move of the value
+
+    void RemoveFromFront(); // (must throw std::length_error)
+
+    Data FrontNRemove(); // (must throw std::length_error)
+
+    void InsertAtBack(const Data &); // Copy of the value
+
+    void InsertAtBack(Data &&); // Move of the value
+
+    /* ************************************************************************ */
+
+    // Specific member function (inherited from ClearableContainer)
+
+    inline void Clear() override
+    {
+      size = 0;
+      delete head;
+      head = tail = nullptr;
+    } // Override ClearableContainer member
+
+    using TestableContainer<Data>::Exists;
+
+    /* ************************************************************************ */
+
+    // Specific member functions (inherited from DictionaryContainer)
+
+    inline bool Insert(const Data &d) override; // Copy of the value
+    inline bool Insert(Data &&d) override;      // Move of the value
+    bool Remove(const Data &) override;
+
+    /* ************************************************************************ */
+
+    // Specific member functions (inherited from LinearContainer)
+
+    inline const Data &operator[](unsigned long) const override;
+    inline Data &operator[](unsigned long) override;
+
+    inline const Data &Front() const override;
+    inline Data &Front() override;
+
+    inline const Data &Back() const override;
+    inline Data &Back() override;
+
+    /* ************************************************************************ */
+
+    // Specific member function (inherited from TraversableContainer)
+
+    using typename TraversableContainer<Data>::TraverseFun;
+
+    inline void Traverse(TraverseFun fun) const override
+    {
+      PreOrderTraverse(fun);
+    }
+
+    /* ************************************************************************ */
+
+    // Specific member function (inherited from PreOrderTraversableContainer)
+
+    inline void PreOrderTraverse(TraverseFun fun) const override
+    {
+      PreOrderTraverse(fun, head);
+    }
+
+    /* ************************************************************************ */
+
+    // Specific member function (inherited from PostOrderTraversableContainer)
+
+    inline void PostOrderTraverse(TraverseFun fun) const override
+    {
+      PostOrderTraverse(fun, head);
+    }
+
+    /* ************************************************************************ */
+
+    // Specific member function (inherited from MappableContainer)
+
+    using typename MappableContainer<Data>::MapFun;
+
+    inline void Map(MapFun fun) override
+    {
+      PreOrderMap(fun);
+    } // Override MappableContainer member
+
+    /* ************************************************************************ */
+
+    // Specific member function (inherited from PreOrderMappableContainer)
+
+    inline void PreOrderMap(MapFun fun) override { PreOrderMap(fun, head); }
+
+    /* ************************************************************************ */
+
+    // Specific member function (inherited from PostOrderMappableContainer)
+
+    inline void PostOrderMap(MapFun fun) override { PostOrderMap(fun, head); }
+
+  protected:
+    void PreOrderTraverse(TraverseFun, Node *) const;
+
+    void PostOrderTraverse(TraverseFun, Node *) const;
+
+    void PreOrderMap(MapFun, Node *) const;
+
+    void PostOrderMap(MapFun, Node *) const;
   };
 
-  Node *head{nullptr};
-  Node *tail{nullptr};
-
-public:
-  // Default constructor
-  List() = default;
-
-  /* ************************************************************************ */
-
-  // Specific constructor
-  List(const TraversableContainer<Data> &);
-  List(MappableContainer<Data> &&);
-
-  /* ************************************************************************ */
-
-  // Copy constructor
-  List(const List &);
-
-  // Move constructor
-  List(List &&);
-
-  /* ************************************************************************ */
-
-  // Destructor
-  virtual ~List() { delete head; };
-
-  /* ************************************************************************ */
-
-  // Copy assignment
-  inline List &operator=(const List &);
-
-  // Move assignment
-  inline List &operator=(List &&) noexcept;
-
-  /* ************************************************************************ */
-
-  // Comparison operators
-  inline bool operator==(const List &) const noexcept;
-  inline bool operator!=(const List &other) const noexcept {
-    return !(*this == other);
-  };
-
-  /* ************************************************************************ */
-
-  // Specific member functions
-
-  void InsertAtFront(const Data &); // Copy of the value
-
-  void InsertAtFront(Data &&); // Move of the value
-
-  void RemoveFromFront(); // (must throw std::length_error)
-
-  Data FrontNRemove(); // (must throw std::length_error)
-
-  void InsertAtBack(const Data &); // Copy of the value
-
-  void InsertAtBack(Data &&); // Move of the value
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from ClearableContainer)
-
-  inline void Clear() override {
-    size = 0;
-    delete head;
-    head = tail = nullptr;
-  } // Override ClearableContainer member
-
-  using TestableContainer<Data>::Exists;
-  /* ************************************************************************ */
-
-  // Specific member functions (inherited from DictionaryContainer)
-
-  inline bool Insert(const Data &d) override; // Copy of the value
-  inline bool Insert(Data &&d) override;      // Move of the value
-  bool Remove(const Data &) override;
-
-  /* ************************************************************************ */
-
-  // Specific member functions (inherited from LinearContainer)
-
-  inline const Data &operator[](unsigned long) const override;
-  inline Data &operator[](unsigned long) override;
-
-  inline const Data &Front() const override;
-  inline Data &Front() override;
-
-  inline const Data &Back() const override;
-  inline Data &Back() override;
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from TraversableContainer)
-
-  using typename TraversableContainer<Data>::TraverseFun;
-
-  inline void Traverse(TraverseFun fun) const override {
-    PreOrderTraverse(fun);
-  }
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from PreOrderTraversableContainer)
-
-  inline void PreOrderTraverse(TraverseFun fun) const override {
-    PreOrderTraverse(fun, head);
-  }
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from PostOrderTraversableContainer)
-
-  inline void PostOrderTraverse(TraverseFun fun) const override {
-    PostOrderTraverse(fun, head);
-  }
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from MappableContainer)
-
-  using typename MappableContainer<Data>::MapFun;
-
-  inline void Map(MapFun fun) override {
-    PreOrderMap(fun);
-  } // Override MappableContainer member
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from PreOrderMappableContainer)
-
-  inline void PreOrderMap(MapFun fun) override { PreOrderMap(fun, head); }
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from PostOrderMappableContainer)
-
-  inline void PostOrderMap(MapFun fun) override { PostOrderMap(fun, head); }
-
-protected:
-  void PreOrderTraverse(TraverseFun, Node *) const;
-
-  void PostOrderTraverse(TraverseFun, Node *) const;
-
-  void PreOrderMap(MapFun, Node *) const;
-
-  void PostOrderMap(MapFun, Node *) const;
-};
-
-/* ************************************************************************** */
+  /* ************************************************************************** */
 
 } // namespace lasd
 
